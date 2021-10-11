@@ -6,14 +6,80 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    MinWidth="500">
 
     <Grid>
-        <StackPanel x:Name="choices" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible">
-            <Button Content="button 1" Width="300" Height="50" Margin="0,10"/>
-            <Button Content="button 2" Width="300" Height="50" Margin="0,10"/>
-            <Button Content="button 3" Width="300" Height="50" Margin="0,10"/>
+        <Button x:Name="btn" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="0" Click="Button_Click" IsEnabled="True">
+            <Button.Background>
+                <ImageBrush/>
+            </Button.Background>
+            <Button.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.ThemeDictionaries>
+                        <ResourceDictionary x:Key="Light">
+                            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="White"/>
+                            <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="White"/>
+                            <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="White"/>
+                        </ResourceDictionary>
+                    </ResourceDictionary.ThemeDictionaries>
+                </ResourceDictionary>
+            </Button.Resources>
+        </Button>
+        <Grid x:Name="menus" Visibility="Visible">
+            <StackPanel x:Name="hud" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Button x:Name="btnplayer" Content="player" Width="100" Margin="0,5" FontSize="20" Click="btnplayer_Click"/>
+                <Button x:Name="btnsettings" Content="settings" Width="100" Margin="0,5" FontSize="20"/>
+            </StackPanel>
+            <StackPanel x:Name="combat" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+                <Button x:Name="btnattack" Content="attack" Width="300" Height="50" Margin="0,10" Click="btnattack_Click"/>
+                <Button x:Name="btnblock" Content="block" Width="300" Height="50" Margin="0,10" Click="btnblock_Click"/>
+                <Button x:Name="btnrun" Content="run" Width="300" Height="50" Margin="0,10" Click="btnrun_Click"/>
+            </StackPanel>
+            <StackPanel x:Name="nav" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible">
+                <Button x:Name="btntocombat" Content="to combat" Width="300" Height="50" Margin="0,10" Click="btntocombat_Click"/>
+                <Button x:Name="btnheal" Content="heal" Width="300" Height="50" Margin="0,10" Click="btnheal_Click"/>
+                <Button Content="button 3" Width="300" Height="50" Margin="0,10" Visibility="Collapsed"/>
+            </StackPanel>
+            <StackPanel x:Name="choices" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+                <Button x:Name="btnchoice1" Content="button 1" Width="300" Height="50" Margin="0,10" Click="btnchoice1_Click"/>
+                <Button Content="button 2" Width="300" Height="50" Margin="0,10"/>
+                <Button Content="button 3" Width="300" Height="50" Margin="0,10"/>
+            </StackPanel>
+            <StackPanel x:Name="playermenu" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+                <TextBlock x:Name="Playername" Text="name" FontSize="30" TextAlignment="Center"/>
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel>
+                        <Button x:Name="addhealth" Content="+5" Margin="5,5" Click="add_Click"/>
+                        <Button x:Name="addspeed" Content="+1" Margin="5,5" Click="add_Click"/>
+                        <Button x:Name="addattack" Content="+1" Margin="5,5" Click="add_Click"/>
+                        <Button x:Name="adddefense" Content="+1" Margin="5,5" Click="add_Click"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock x:Name="Playerhealth" Text="health" FontSize="24" Margin="5,5"/>
+                        <TextBlock x:Name="Playerspeed" Text="speed" FontSize="24" Margin="5,5"/>
+                        <TextBlock x:Name="Playerattack" Text="attack" FontSize="24" Margin="5,5"/>
+                        <TextBlock x:Name="Playerdefense" Text="defense" FontSize="24" Margin="5,5"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock x:Name="Playergold" Text="gold" FontSize="24" Margin="5,5"/>
+                        <TextBlock x:Name="Playerxp" Text="xp" FontSize="24" Margin="5,5"/>
+                        <TextBlock x:Name="Playerlevel" Text="level" FontSize="24" Margin="5,5"/>
+                        <TextBlock x:Name="Playerpoints" Text="points" FontSize="24" Margin="5,5"/>
+                    </StackPanel>
+                </StackPanel>
+                <Button x:Name="btnback" HorizontalAlignment="Stretch" FontSize="24" Content="Go back" Click="btnback_Click"/>
+            </StackPanel>
+            <StackPanel x:Name="settingsmenu" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+
+            </StackPanel>
+        </Grid>
+        <StackPanel VerticalAlignment="Bottom">
+            <TextBlock x:Name="text" Text="TextBlock" TextWrapping="Wrap" FontSize="24" VerticalAlignment="Bottom"/>
+            <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button x:Name="btnskip" Content="skip" Margin="5,0" Click="btnskip_Click"/>
+                <Button x:Name="btnauto" Content="auto" Margin="5,0" Click="btnauto_Click"/>
+            </StackPanel>
         </StackPanel>
-        <TextBlock x:Name="text" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" FontSize="24"/>
     </Grid>
 </Page>
