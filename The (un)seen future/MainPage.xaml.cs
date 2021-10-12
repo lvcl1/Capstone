@@ -187,6 +187,7 @@ namespace The__un_seen_future
         {
             btnrun_Click(sender, e);
             playermenu.Visibility = Visibility.Collapsed;
+            settingsmenu.Visibility = Visibility.Collapsed;
         }
 
         private void add_Click(object sender, RoutedEventArgs e)
@@ -215,10 +216,11 @@ namespace The__un_seen_future
             }
             btnplayer_Click(sender, e);
         }
+        public int autospeed=5;
         private void btnauto_Click(object sender, RoutedEventArgs e)
         {
             timer.Stop();
-            timer.Interval = TimeSpan.FromSeconds(5);
+            timer.Interval = TimeSpan.FromSeconds(autospeed);
             timer.Start();
         }
         private void btnskip_Click(object sender, RoutedEventArgs e)
@@ -234,6 +236,13 @@ namespace The__un_seen_future
             {
                 timer.Stop();
             }
+        }
+
+        private void btnsettings_Click(object sender, RoutedEventArgs e)
+        {
+            nav.Visibility = Visibility.Collapsed;
+            hud.Visibility = Visibility.Collapsed;
+            settingsmenu.Visibility = Visibility.Visible;
         }
 
         private void btnheal_Click(object sender, RoutedEventArgs e)
