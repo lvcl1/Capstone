@@ -55,18 +55,33 @@ namespace The__un_seen_future
             //choices.Visibility = Visibility.Collapsed;
             //btn.IsEnabled = true;
         }
-        private void btntocombat_Click(object sender, RoutedEventArgs e)
+        private void btntooutside_Click(object sender, RoutedEventArgs e)
         {
             nav.Visibility = Visibility.Collapsed;
             hud.Visibility = Visibility.Collapsed;
             combat.Visibility = Visibility.Visible;
-            enemy = Enemy.NewEnemy();
-            if (player.Level>=50)
+            switch (random.Next(1,5))
             {
-                enemy = demonlord;
+                case 1:
+                    btnrun_Click(sender, e);
+                    text.Text = "you found nothing";
+                    break;
+                case 2:
+                    btnrun_Click(sender, e);
+                    int num = random.Next(1, 10);
+                    player.Gold += num;
+                    text.Text = "you found " + num + " gold";
+                    break;
+                default:
+                    enemy = Enemy.NewEnemy();
+                    if (player.Level >= 50)
+                    {
+                        enemy = demonlord;
+                    }
+                    enemyhealth = enemy.Health;
+                    text.Text = enemy.Name + ": " + enemyhealth + "/" + enemy.Health;
+                    break;
             }
-            enemyhealth = enemy.Health;
-            text.Text = enemy.Name + ": " + enemyhealth + "/" + enemy.Health;
         }
 
         private void btnrun_Click(object sender, RoutedEventArgs e)
@@ -128,7 +143,7 @@ namespace The__un_seen_future
                     player.Gold += enemy.Gold / 2;
                     text.Text = holder + "\nas you fall over you see the " + enemy.Name + " is dead and you received " + enemy.XP / 2 + " Xp and " + enemy.Gold / 2 + " Gold\n"
                         + player.XP + "/100 Xp " + player.Gold + " Gold";
-                    btntocombat.IsEnabled = false;
+                    btntooutside.IsEnabled = false;
                     if (enemy.Name.Equals("demon lord"))
                     {
                         text.Text = text.Text + "\nwith the demon lord dead you win the game";
@@ -150,7 +165,7 @@ namespace The__un_seen_future
                 else if (playerhealth <= 0)
                 {
                     text.Text = holder + "\nyou blackout and await death. after some time you wake up in town with no idea how you got here";
-                    btntocombat.IsEnabled = false;
+                    btntooutside.IsEnabled = false;
                 }
                 Xpcheck();
             }
@@ -249,7 +264,7 @@ namespace The__un_seen_future
         {
             playerhealth = player.Health;
             btnheal.Content = "heal: " + playerhealth + "/" + player.Health;
-            btntocombat.IsEnabled = true;
+            btntooutside.IsEnabled = true;
         }
 
         private void Xpcheck()
