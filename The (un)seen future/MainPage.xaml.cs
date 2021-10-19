@@ -22,38 +22,103 @@ namespace The__un_seen_future
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        int enemyhealth, playerhealth;
+        int enemyhealth, playerhealth, storytext;
         Random random = new Random();
         Player player;
         Enemy enemy, demonlord;
         DispatcherTimer timer = new DispatcherTimer();
+        string[][] Story = new string[((int)Storylocation.epilogue)+1][];
+        Storylocation storylocation = Storylocation.prologue;
         public MainPage()
         {
             InitializeComponent();
-            player = new Player(5, 5, 5, 5, 0, 0, 1, 3);
+            //player = new Player(5, 5, 5, 5, 0, 0, 1, 3);
+            player = new Player(500, 500, 500, 500, 0, 1000, 1, 3);
             playerhealth = player.Health;
-            btnheal.Content = "heal: " + playerhealth + "/" + player.Health;
+            //btnrun_Click(null, null);
             demonlord = new Enemy(100, 50, 50, 20, 150, 250, "demon lord");
             timer.Tick += Timer_Tick;
+            speaker.Text = "";
+            storytime();
+            storymaker();
+            Button_Click(null, null);
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (timer.IsEnabled&&sender==btn)
+            string str = Story[(int)storylocation][storytext];
+            speaker.Text = "";
+            if (str.StartsWith("options{"))
             {
+                btnskip.IsEnabled = false;
+                btnauto.IsEnabled = false;
+                btn.IsEnabled = false;
+                menus.Visibility = Visibility.Visible;
+                choices.Visibility = Visibility.Visible;
+                str = str.Substring(str.IndexOf("{") + 1, str.IndexOf("}") - str.IndexOf("{") - 1);
+                var temp = str.Split(',');
                 timer.Stop();
+                btnchoice1.Content = temp[0];
+                btnchoice2.Content = temp[1];
+                btnchoice3.Content = temp[2];
+            }
+            else if(str.StartsWith("event{"))
+            {
+                str = str.Substring(6, str.Length - 7);
+                switch (str)
+                {
+                    case "getname":
+                        //player.getname();
+                        storymaker();
+                        break;
+                    default:
+                        break;
+                }
+                storytext++;
+                Button_Click(sender, e);
+                storytext--;
+            }
+            else if (str.StartsWith("speaker{"))
+            {
+                int temp = str.IndexOf('}');
+                speaker.Text = str.Substring(8, temp - 8);
+                text.Text = str.Substring(temp + 2);
             }
             else
             {
-                text.Text = "" + random.Next(0, 1000);
+                text.Text = str;
             }
+            storytextcheck();
             //btn.IsEnabled = false;
             //choices.Visibility = Visibility.Visible;
         }
-
-        private void btnchoice1_Click(object sender, RoutedEventArgs e)
+        private void btnchoices_Click(object sender, RoutedEventArgs e)
         {
-            //choices.Visibility = Visibility.Collapsed;
-            //btn.IsEnabled = true;
+            int.TryParse(((Button)sender).Name[((Button)sender).Name.Length-1].ToString(),out int result);
+            storytext += result - 1;
+            choices.Visibility = Visibility.Collapsed;
+            menus.Visibility = Visibility.Collapsed;
+            Button_Click(null, null);
+            storytext += 2 - result;
+            btnskip.IsEnabled = true;
+            btnauto.IsEnabled = true;
+            btn.IsEnabled = true;
+            storytextcheck();
+        }
+        private void storytextcheck()
+        {
+            if (storytext < Story[(int)storylocation].Length)
+            {
+                storytext++;
+                if (storytext == Story[(int)storylocation].Length)
+                {
+                    menus.Visibility = Visibility.Visible;
+                    btnrun_Click(null, null);
+                    btn.IsEnabled = false;
+                    btnskip.IsEnabled = false;
+                    btnauto.IsEnabled = false;
+                    storytext = 0;
+                }
+            }
         }
         private void btntooutside_Click(object sender, RoutedEventArgs e)
         {
@@ -146,7 +211,13 @@ namespace The__un_seen_future
                     btntooutside.IsEnabled = false;
                     if (enemy.Name.Equals("demon lord"))
                     {
-                        text.Text = text.Text + "\nwith the demon lord dead you win the game";
+                        text.Text = text.Text + "\nwith the demon lord dead you return to the palace";
+                        storylocation = Storylocation.epilogue;
+                        storytime();
+                    }
+                    if (enemy.Name.Equals(questenemy.Name))
+                    {
+                        questnum--;
                     }
 
                 }
@@ -158,7 +229,13 @@ namespace The__un_seen_future
                         + player.XP + "/100 Xp " + player.Gold + " Gold";
                     if (enemy.Name.Equals("demon lord"))
                     {
-                        text.Text = text.Text + "\nwith the demon lord dead you win the game";
+                        text.Text = text.Text + "\nwith the demon lord dead you return to the palace";
+                        storylocation = Storylocation.epilogue;
+                        storytime();
+                    }
+                    if (enemy.Name.Equals(questenemy.Name))
+                    {
+                        questnum--;
                     }
 
                 }
@@ -183,8 +260,7 @@ namespace The__un_seen_future
 
         private void btnplayer_Click(object sender, RoutedEventArgs e)
         {
-            nav.Visibility = Visibility.Collapsed;
-            hud.Visibility = Visibility.Collapsed;
+            menus.Visibility = Visibility.Collapsed;
             playermenu.Visibility = Visibility.Visible;
             text.Text = "";
             Playername.Text = player.Name;  
@@ -201,6 +277,7 @@ namespace The__un_seen_future
         private void btnback_Click(object sender, RoutedEventArgs e)
         {
             btnrun_Click(sender, e);
+            menus.Visibility = Visibility.Visible;
             playermenu.Visibility = Visibility.Collapsed;
             settingsmenu.Visibility = Visibility.Collapsed;
         }
@@ -255,8 +332,7 @@ namespace The__un_seen_future
 
         private void btnsettings_Click(object sender, RoutedEventArgs e)
         {
-            nav.Visibility = Visibility.Collapsed;
-            hud.Visibility = Visibility.Collapsed;
+            menus.Visibility = Visibility.Collapsed;
             settingsmenu.Visibility = Visibility.Visible;
         }
 
@@ -265,6 +341,73 @@ namespace The__un_seen_future
             playerhealth = player.Health;
             btnheal.Content = "heal: " + playerhealth + "/" + player.Health;
             btntooutside.IsEnabled = true;
+        }
+
+        private void btnadventurersguild_Click(object sender, RoutedEventArgs e)
+        {
+            nav.Visibility = Visibility.Collapsed;
+            adventurersguild.Visibility = Visibility.Visible;
+            btnsubmitquest.Visibility = questnum == 0 ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void btnshop_Click(object sender, RoutedEventArgs e)
+        {
+            nav.Visibility = Visibility.Collapsed;
+            shop.Visibility = Visibility.Visible;
+        }
+
+        private void btnupgrade_Click(object sender, RoutedEventArgs e)
+        {
+            if (player.Gold >= 100)
+            {
+                switch (((Button)sender).Name)
+                {
+                    case "btnupgradeweapon":
+                        player.Attack++;
+                        text.Text = "you upgraded your weapon by 1 point\nweapon is now " + player.Attack;
+                        break;
+                    case "btnupgradearmor":
+                        player.Defense++;
+                        text.Text = "you upgraded your armor by 1 point\narmor is now " + player.Defense;
+                        break;
+                    default:
+                        break;
+                }
+                player.Gold -= 100;
+            }
+        }
+        Enemy questenemy = new Enemy(1, 1, 1, 1, 1, 1, "default");
+        int questnum = -1, questreward;
+        private void btngetquest_Click(object sender, RoutedEventArgs e)
+        {
+            btngetquest.Visibility = Visibility.Collapsed;
+            btnviewquest.Visibility = Visibility.Visible;
+            questenemy = Enemy.NewEnemy();
+            questnum = random.Next(2, 6);
+            questreward = questnum * 5;
+            btnviewquest_Click(sender, e);
+        }
+
+        private void btnviewquest_Click(object sender, RoutedEventArgs e)
+        {
+            text.Text = "defeat " + questnum + " " + questenemy.Name + "s for " + questreward + "  gold";
+        }
+
+        private void btnsubmitquest_Click(object sender, RoutedEventArgs e)
+        {
+            btngetquest.Visibility = Visibility.Visible;
+            btnviewquest.Visibility = Visibility.Collapsed;
+            btnsubmitquest.Visibility = Visibility.Collapsed;
+            player.Gold += questreward;
+            questnum = -1;
+            questenemy.Name = "default";
+        }
+
+        private void btntownback_Click(object sender, RoutedEventArgs e)
+        {
+            btnrun_Click(sender, e);
+            shop.Visibility = Visibility.Collapsed;
+            adventurersguild.Visibility = Visibility.Collapsed;
         }
 
         private void Xpcheck()
@@ -278,5 +421,48 @@ namespace The__un_seen_future
                 Xpcheck();
             }
         }
+        private void storytime()
+        {
+            btn.IsEnabled = true;
+            btnskip.IsEnabled = true;
+            btnauto.IsEnabled = true;
+            combat.Visibility = Visibility.Collapsed;
+            menus.Visibility = Visibility.Collapsed;
+
+        }
+        /// <summary>
+        /// use options{option1,options2...} for player options +numofoptions
+        /// use event{event} for an event +1
+        /// speaker{name of speaker} (what they're saying) +0
+        /// when using any of these special cases make sure to have enough space behide it
+        /// </summary>
+        public void storymaker()
+        {
+            //TODO I NEED NAMES
+            //names
+            string kingdom = "kingdom", princesses = "princesses", king = "king";
+            Story[(int)Storylocation.prologue] = new string[] { "any similarities to real life people or events are purely coincidence\nwelcome to The (un)seen future", "event{getname}",
+                "speaker{" + player.Name + " thoughts} everyone has something that makes them special or different from the norm, it might not be completely unique but it's something you can take pride in.",
+                "speaker{" + player.Name + " thoughts} often we are unable to see our own abilities always conpering ourselves to others, \"they can do it better\" or \"they can do it faster\", while not seeing that there are things you do better or faster.",
+                "speaker{" + player.Name + " thoughts} you might have increased strength, vision, hearing, or an increase in some other aspest. or perhaps your able to do something others can't like having photographic memory or how I can see the future.",
+                "speaker{" + player.Name + " thoughts} most would think that this ability is amazing how ever there's a catch, it only happens while I'm asleep in my dreams, until it happens i can't remeber the dream, and i have no control over what I see or when I see it",
+                "speaker{" + player.Name + " thoughts} this might seem far-fetched, how do i know that i can see the future if I can't rember it, maybe it's just a bad case of deja vu?",
+                "speaker{" + player.Name + " thoughts} but dreams and deja vu work with memories and past experiences and doesn't just make up random things, so bing able to see entire scenes with unknown things in unknown places play out then have the exact same scenes play out what else would this be",
+                "speaker{" + player.Name + " thoughts} be it nothing more then dreams or precognition a cupule nights ago I had a strange dream that was something that was stright out of a fantasy story yet it felt so real",
+                "speaker{" + player.Name + " thoughts} but it was not the whole story, it kept jumping to random scenes, one second I was being called a hero by an unknown shadowy figure, the next fighting a demon, after that having a knife stabbed into my back surrounded by noble looking people",
+                "speaker{" + player.Name + " thoughts} I woke up in a cold sweat but had forgotten the dream entirely as if wiped from my mind, but now it's back as if it was never gone becuse the first part is happen a shadowy figure is calling me a hero.",
+                "speaker{shadowy figure} THE SUMMONING WORKED! oh hero please save us from the demon lord",
+                "options{who are you,where is this,whats going on}",
+                "I am the princesses of the kingdom "+kingdom+", "+princesses,
+                "the kingdom of "+kingdom+" my name is "+princesses,
+                "you have been summoned to this world my name is "+princesses };
+            Story[(int)Storylocation.epilogue] = new string[] { "after returning to the palace you receive your reward\nwhile gitting your reward you feel a knife going in to your back stright to the heart","you have been betrayed by those you worked to save",
+                "speaker{" + king + "} he didn't see it coming hahaha did he think we would keep him alive when he has the power to defeat the demon lord?",
+                "speaker{" + player.Name + " thoughts} so they feared my power and decided to get rid of me before anything bad would happen, what could i have done to cahanged this outcome"};
+        }
+    }
+    public enum Storylocation
+    {
+        prologue, epilogue
     }
 }

@@ -13,11 +13,11 @@ namespace The__un_seen_future
         public int Points { get; set; }
         public Player(int health, int speed, int attack, int defense, int xp, int gold, int level, int point) : base(health, speed, attack, defense, xp, gold)
         {
-            getname();
+            Getname();
             Level = level;
             Points = point;
         }
-        private async void getname()
+        private async void Getname()
         {
             Name name = new Name();
             do

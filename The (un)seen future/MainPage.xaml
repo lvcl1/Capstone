@@ -26,7 +26,7 @@
                 </ResourceDictionary>
             </Button.Resources>
         </Button>
-        <Grid x:Name="menus" Visibility="Visible">
+        <Grid x:Name="menus" Visibility="Collapsed">
             <StackPanel x:Name="hud" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Button x:Name="btnplayer" Content="player" Width="100" Margin="0,5" FontSize="20" Click="btnplayer_Click"/>
                 <Button x:Name="btnsettings" Content="settings" Width="100" Margin="0,5" FontSize="20" Click="btnsettings_Click"/>
@@ -36,48 +36,61 @@
                 <Button x:Name="btnblock" Content="block" Width="300" Height="50" Margin="0,10" Click="btnblock_Click"/>
                 <Button x:Name="btnrun" Content="run" Width="300" Height="50" Margin="0,10" Click="btnrun_Click"/>
             </StackPanel>
-            <StackPanel x:Name="nav" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible">
+            <StackPanel x:Name="nav" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
                 <Button x:Name="btntooutside" Content="to outside" Width="300" Height="50" Margin="0,10" Click="btntooutside_Click"/>
                 <Button x:Name="btnheal" Content="heal" Width="300" Height="50" Margin="0,10" Click="btnheal_Click"/>
-                <Button Content="button 3" Width="300" Height="50" Margin="0,10" Visibility="Collapsed"/>
+                <Button x:Name="btnadventurersguild" Content="to adventurers guild" Width="300" Height="50" Margin="0,10" Click="btnadventurersguild_Click"/>
+                <Button x:Name="btnshop" Content="to shop" Width="300" Height="50" Margin="0,10" Click="btnshop_Click"/>
             </StackPanel>
             <StackPanel x:Name="choices" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
-                <Button x:Name="btnchoice1" Content="button 1" Width="300" Height="50" Margin="0,10" Click="btnchoice1_Click"/>
-                <Button Content="button 2" Width="300" Height="50" Margin="0,10"/>
-                <Button Content="button 3" Width="300" Height="50" Margin="0,10"/>
+                <Button x:Name="btnchoice1" Width="300" Height="50" Margin="0,10" Click="btnchoices_Click"/>
+                <Button x:Name="btnchoice2" Width="300" Height="50" Margin="0,10" Click="btnchoices_Click"/>
+                <Button x:Name="btnchoice3" Width="300" Height="50" Margin="0,10" Click="btnchoices_Click"/>
             </StackPanel>
-            <StackPanel x:Name="playermenu" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
-                <TextBlock x:Name="Playername" Text="name" FontSize="30" TextAlignment="Center"/>
-                <StackPanel Orientation="Horizontal">
-                    <StackPanel>
-                        <Button x:Name="addhealth" Content="+5" Margin="5,5" Click="add_Click"/>
-                        <Button x:Name="addspeed" Content="+1" Margin="5,5" Click="add_Click"/>
-                        <Button x:Name="addattack" Content="+1" Margin="5,5" Click="add_Click"/>
-                        <Button x:Name="adddefense" Content="+1" Margin="5,5" Click="add_Click"/>
-                    </StackPanel>
-                    <StackPanel>
-                        <TextBlock x:Name="Playerhealth" Text="health" FontSize="24" Margin="5,5"/>
-                        <TextBlock x:Name="Playerspeed" Text="speed" FontSize="24" Margin="5,5"/>
-                        <TextBlock x:Name="Playerattack" Text="attack" FontSize="24" Margin="5,5"/>
-                        <TextBlock x:Name="Playerdefense" Text="defense" FontSize="24" Margin="5,5"/>
-                    </StackPanel>
-                    <StackPanel>
-                        <TextBlock x:Name="Playergold" Text="gold" FontSize="24" Margin="5,5"/>
-                        <TextBlock x:Name="Playerxp" Text="xp" FontSize="24" Margin="5,5"/>
-                        <TextBlock x:Name="Playerlevel" Text="level" FontSize="24" Margin="5,5"/>
-                        <TextBlock x:Name="Playerpoints" Text="points" FontSize="24" Margin="5,5"/>
-                    </StackPanel>
-                </StackPanel>
-                <Button x:Name="btnplayerback" HorizontalAlignment="Stretch" FontSize="24" Content="Go back" Click="btnback_Click"/>
+            <StackPanel x:Name="adventurersguild" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+                <Button x:Name="btngetquest" Content="get quest" Width="300" Height="50" Margin="0,10" Click="btngetquest_Click"/>
+                <Button x:Name="btnviewquest" Content="view quest" Width="300" Height="50" Margin="0,10" Visibility="Collapsed" Click="btnviewquest_Click"/>
+                <Button x:Name="btnsubmitquest" Content="submit quest" Width="300" Height="50" Margin="0,10" Visibility="Collapsed" Click="btnsubmitquest_Click"/>
+                <Button Content="back" Width="300" Height="50" Margin="0,10" Click="btntownback_Click"/>
             </StackPanel>
-            <StackPanel x:Name="settingsmenu" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
-                <Slider Minimum="1" Maximum="10" Header="auto speed (Seconds)" Value="{x:Bind autospeed, Mode=TwoWay}" StepFrequency="0.1"/>
-                <Button x:Name="btnsettingsback" HorizontalAlignment="Stretch" FontSize="24" Content="Go back" Click="btnback_Click"/>
+            <StackPanel x:Name="shop" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+                <Button x:Name="btnupgradeweapon" Content="upgrade weapon (100 gold)" Width="300" Height="50" Margin="0,10" Click="btnupgrade_Click"/>
+                <Button x:Name="btnupgradearmor" Content="upgrade armor (100 gold)" Width="300" Height="50" Margin="0,10" Click="btnupgrade_Click"/>
+                <Button Content="back" Width="300" Height="50" Margin="0,10" Click="btntownback_Click"/>
             </StackPanel>
         </Grid>
+        <StackPanel x:Name="playermenu" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+            <TextBlock x:Name="Playername" Text="name" FontSize="30" TextAlignment="Center"/>
+            <StackPanel Orientation="Horizontal">
+                <StackPanel>
+                    <Button x:Name="addhealth" Content="+5" Margin="5,5" Click="add_Click"/>
+                    <Button x:Name="addspeed" Content="+1" Margin="5,5" Click="add_Click"/>
+                    <!--<Button x:Name="addattack" Content="+1" Margin="5,5" Click="add_Click"/>
+                    <Button x:Name="adddefense" Content="+1" Margin="5,5" Click="add_Click"/>-->
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock x:Name="Playerhealth" Text="health" FontSize="24" Margin="5,5"/>
+                    <TextBlock x:Name="Playerspeed" Text="speed" FontSize="24" Margin="5,5"/>
+                    <TextBlock x:Name="Playerattack" Text="attack" FontSize="24" Margin="5,5"/>
+                    <TextBlock x:Name="Playerdefense" Text="defense" FontSize="24" Margin="5,5"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock x:Name="Playergold" Text="gold" FontSize="24" Margin="5,5"/>
+                    <TextBlock x:Name="Playerxp" Text="xp" FontSize="24" Margin="5,5"/>
+                    <TextBlock x:Name="Playerlevel" Text="level" FontSize="24" Margin="5,5"/>
+                    <TextBlock x:Name="Playerpoints" Text="points" FontSize="24" Margin="5,5"/>
+                </StackPanel>
+            </StackPanel>
+            <Button HorizontalAlignment="Stretch" FontSize="24" Content="Go back" Click="btnback_Click"/>
+        </StackPanel>
+        <StackPanel x:Name="settingsmenu" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+            <Slider Minimum="1" Maximum="10" Header="auto speed (Seconds)" Value="{x:Bind autospeed, Mode=TwoWay}" StepFrequency="0.1"/>
+            <Button HorizontalAlignment="Stretch" FontSize="24" Content="Go back" Click="btnback_Click"/>
+        </StackPanel>
         <StackPanel VerticalAlignment="Bottom">
-            <TextBlock x:Name="text" Text="TextBlock" TextWrapping="Wrap" FontSize="24" VerticalAlignment="Bottom"/>
-            <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Orientation="Horizontal">
+            <TextBlock x:Name="speaker" Text="speaker" TextWrapping="Wrap" FontSize="20" HorizontalAlignment="Left"/>
+            <TextBlock x:Name="text" Text="Text" TextWrapping="WrapWholeWords" FontSize="24"/>
+            <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Orientation="Horizontal">
                 <Button x:Name="btnskip" Content="skip" Margin="5,0" Click="btnskip_Click"/>
                 <Button x:Name="btnauto" Content="auto" Margin="5,0" Click="btnauto_Click"/>
             </StackPanel>
