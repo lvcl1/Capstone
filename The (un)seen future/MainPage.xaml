@@ -6,28 +6,23 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    MinWidth="500">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <Style TargetType="StackPanel">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Opacity" Value=".8"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Opacity" Value="1"/>
+        </Style>
+    </Page.Resources>
 
     <Grid>
-        <Button x:Name="btn" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="0" Click="Button_Click" IsEnabled="True">
-            <Button.Background>
-                <ImageBrush/>
-            </Button.Background>
-            <Button.Resources>
-                <ResourceDictionary>
-                    <ResourceDictionary.ThemeDictionaries>
-                        <ResourceDictionary x:Key="Light">
-                            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="White"/>
-                            <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="White"/>
-                            <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="White"/>
-                        </ResourceDictionary>
-                    </ResourceDictionary.ThemeDictionaries>
-                </ResourceDictionary>
-            </Button.Resources>
-        </Button>
-        <Grid x:Name="menus" Visibility="Collapsed">
-            <StackPanel x:Name="hud" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <Image x:Name="imgbackground" Stretch="Fill"/>
+        <Image x:Name="imgforeground" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Button x:Name="btn" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="0" Click="Button_Click" IsEnabled="True" Opacity="0"/>
+        <Grid x:Name="menus" Visibility="Visible">
+            <StackPanel x:Name="hud" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Visible">
                 <Button x:Name="btnplayer" Content="player" Width="100" Margin="0,5" FontSize="20" Click="btnplayer_Click"/>
                 <Button x:Name="btnsettings" Content="settings" Width="100" Margin="0,5" FontSize="20" Click="btnsettings_Click"/>
             </StackPanel>
@@ -41,11 +36,22 @@
                 <Button x:Name="btnheal" Content="heal" Width="300" Height="50" Margin="0,10" Click="btnheal_Click"/>
                 <Button x:Name="btnadventurersguild" Content="to adventurers guild" Width="300" Height="50" Margin="0,10" Click="btnadventurersguild_Click"/>
                 <Button x:Name="btnshop" Content="to shop" Width="300" Height="50" Margin="0,10" Click="btnshop_Click"/>
+                <Button x:Name="btntalktoprincesses" Content="talk to princesses" Width="300" Height="50" Margin="0,10" Click="btntalktoprincesses_Click"/>
             </StackPanel>
-            <StackPanel x:Name="choices" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
-                <Button x:Name="btnchoice1" Width="300" Height="50" Margin="0,10" Click="btnchoices_Click"/>
-                <Button x:Name="btnchoice2" Width="300" Height="50" Margin="0,10" Click="btnchoices_Click"/>
-                <Button x:Name="btnchoice3" Width="300" Height="50" Margin="0,10" Click="btnchoices_Click"/>
+            <StackPanel x:Name="outside" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+                <Button x:Name="btntoforest" Content="to the forest" Width="300" Height="50" Margin="0,10" Click="btntocombat_Click"/>
+                <Button x:Name="btntocrypt" Content="to the crypt" Width="300" Height="50" Margin="0,10" Click="btntocombat_Click" Visibility="Collapsed"/>
+                <Button x:Name="btntoswamp" Content="to the swamp" Width="300" Height="50" Margin="0,10" Click="btntocombat_Click" Visibility="Collapsed"/>
+                <Button x:Name="btntodragonden" Content="to the dragon den" Width="300" Height="50" Margin="0,10" Click="btntocombat_Click" Visibility="Collapsed"/>
+                <Button x:Name="btntodemonlord" Content="to the demon lord" Width="300" Height="50" Margin="0,10" Click="btntocombat_Click" Visibility="Collapsed"/>
+                <Button Content="back" Width="300" Height="50" Margin="0,10" Click="btntownload_Click"/>
+            </StackPanel>
+            <StackPanel x:Name="choices" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible">
+                <Button x:Name="btnchoice5" Width="300" Height="50" Margin="0,10" Click="btnchoices_Click" Visibility="Collapsed"/>
+                <Button x:Name="btnchoice1" Width="300" Height="50" Margin="0,10" Click="btnchoices_Click" Visibility="Collapsed"/>
+                <Button x:Name="btnchoice2" Width="300" Height="50" Margin="0,10" Click="btnchoices_Click" Visibility="Collapsed"/>
+                <Button x:Name="btnchoice3" Width="300" Height="50" Margin="0,10" Click="btnchoices_Click" Visibility="Collapsed"/>
+                <Button x:Name="btnchoice4" Width="300" Height="50" Margin="0,10" Click="btnchoices_Click" Visibility="Collapsed"/>
             </StackPanel>
             <StackPanel x:Name="adventurersguild" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
                 <Button x:Name="btngetquest" Content="get quest" Width="300" Height="50" Margin="0,10" Click="btngetquest_Click"/>
@@ -53,10 +59,27 @@
                 <Button x:Name="btnsubmitquest" Content="submit quest" Width="300" Height="50" Margin="0,10" Visibility="Collapsed" Click="btnsubmitquest_Click"/>
                 <Button Content="back" Width="300" Height="50" Margin="0,10" Click="btntownback_Click"/>
             </StackPanel>
-            <StackPanel x:Name="shop" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
-                <Button x:Name="btnupgradeweapon" Content="upgrade weapon (100 gold)" Width="300" Height="50" Margin="0,10" Click="btnupgrade_Click"/>
-                <Button x:Name="btnupgradearmor" Content="upgrade armor (100 gold)" Width="300" Height="50" Margin="0,10" Click="btnupgrade_Click"/>
-                <Button Content="back" Width="300" Height="50" Margin="0,10" Click="btntownback_Click"/>
+            <StackPanel x:Name="shop" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"  Orientation="Horizontal">
+                <StackPanel>
+                    <Button x:Name="btnupgradeweapon" Content="upgrade weapon (100 gold)" Width="300" Height="50" Margin="0,10" Click="btnupgrade_Click"/>
+                    <Button x:Name="btnupgradearmor" Content="upgrade armor (100 gold)" Width="300" Height="50" Margin="0,10" Click="btnupgrade_Click"/>
+                    <Button Content="back" Width="300" Height="50" Margin="0,10" Click="btntownback_Click"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Margin="5,0">
+                        <TextBlock Text="change Weapon type"/>
+                        <Button Content="bash" Margin="0,5" HorizontalAlignment="Stretch" Click="btnweaponchange_Click"/>
+                        <Button Content="slash" Margin="0,5" HorizontalAlignment="Stretch" Click="btnweaponchange_Click"/>
+                        <Button Content="stab" Margin="0,5" HorizontalAlignment="Stretch" Click="btnweaponchange_Click"/>
+                    </StackPanel>
+                    <StackPanel Margin="5,0">
+                        <TextBlock Text="change weapon enchant"/>
+                        <Button Content="fire" Margin="0,5" HorizontalAlignment="Stretch" Click="btnweaponchange_Click"/>
+                        <Button Content="ice" Margin="0,5" HorizontalAlignment="Stretch" Click="btnweaponchange_Click"/>
+                        <Button Content="air" Margin="0,5" HorizontalAlignment="Stretch" Click="btnweaponchange_Click"/>
+                        <Button Content="earth" Margin="0,5" HorizontalAlignment="Stretch" Click="btnweaponchange_Click"/>
+                    </StackPanel>
+                </StackPanel>
             </StackPanel>
         </Grid>
         <StackPanel x:Name="playermenu" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
@@ -85,9 +108,12 @@
         </StackPanel>
         <StackPanel x:Name="settingsmenu" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
             <Slider Minimum="1" Maximum="10" Header="auto speed (Seconds)" Value="{x:Bind autospeed, Mode=TwoWay}" StepFrequency="0.1"/>
-            <Button HorizontalAlignment="Stretch" FontSize="24" Content="Go back" Click="btnback_Click"/>
+            <Button HorizontalAlignment="Stretch" FontSize="24" Margin="0,5" Content="Go back" Click="btnback_Click"/>
+            <Button HorizontalAlignment="Stretch" FontSize="24" Margin="0,5" Content="save game" Click="save_Click"/>
+            <Button HorizontalAlignment="Stretch" FontSize="24" Margin="0,5" Content="load game" Click="load_Click"/>
+            <Button HorizontalAlignment="Stretch" FontSize="24" Margin="0,5" Content="delete save file" Click="delete_Click"/>
         </StackPanel>
-        <StackPanel VerticalAlignment="Bottom">
+        <StackPanel VerticalAlignment="Bottom" Background="White" Opacity="1">
             <TextBlock x:Name="speaker" Text="speaker" TextWrapping="Wrap" FontSize="20" HorizontalAlignment="Left"/>
             <TextBlock x:Name="text" Text="Text" TextWrapping="WrapWholeWords" FontSize="24"/>
             <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Orientation="Horizontal">
