@@ -44,8 +44,8 @@ namespace The__un_seen_future
             if (File.Exists(ApplicationData.Current.LocalFolder.Path+"\\savefile.txt")) load();
             else
             {
-                //player = new Player(5, 5, 5, 5, 0, 0, 1, 3);
-                player = new Player(500, 500, 500, 500, 0, 1000, 100, 300);
+                player = new Player(5, 5, 5, 5, 0, 0, 1, 3);
+                //player = new Player(500, 500, 500, 500, 0, 1000, 100, 300);
                 playerhealth = player.Health;
                 storymaker();
             }
