@@ -139,10 +139,12 @@
     <Content Include="Assets\adventurersguild.png" />
     <Content Include="Assets\crypt.png" />
     <Content Include="Assets\darkness.png" />
+    <Content Include="Assets\demon castle.png" />
+    <Content Include="Assets\dragon den.png" />
     <Content Include="Assets\forest.png" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\outside.png" />
-    <Content Include="Assets\princesses.png" />
+    <Content Include="Assets\princess.png" />
     <Content Include="Assets\Receptionist.png" />
     <Content Include="Assets\shop.png" />
     <Content Include="Assets\shopkeeper.png" />
@@ -150,6 +152,7 @@
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\swamp.png" />
     <Content Include="Assets\throneroom.png" />
     <Content Include="Assets\town.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />

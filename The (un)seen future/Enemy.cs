@@ -22,7 +22,7 @@ namespace The__un_seen_future
         static private Enemy enemy;
         static public Enemy NewForestEnemy(bool boss = false)
         {
-            int newenemy = random.Next(4);
+            int newenemy = 0;//random.Next(4);
             if (boss) enemy = new Enemy(10, 10, 10, 10, 10, 10, "lion", "", Weakness.ice);
             else
             {
@@ -54,7 +54,7 @@ namespace The__un_seen_future
                         break;
                     case 2: enemy = new Enemy(5, 5, 4, 2, 7, 7, "skeleton archer", "skeleton archer has a bow and light armor so low defense but fast", Weakness.bash);
                         break;
-                    default: enemy = new Enemy(2, 2, 3, 3, 5, 5, "skeleton", "skeletons can be found in most places and easily taken out with bashing damage", Weakness.bash);
+                    default: enemy = new Enemy(4, 4, 5, 5, 7, 7, "skeleton", "skeletons can be found in most places and easily taken out with bashing damage", Weakness.bash);
                         break;
                 }
             }
@@ -74,7 +74,7 @@ namespace The__un_seen_future
                         break;
                     case 2: enemy = new Enemy(5, 13, 5, 6, 12, 12, "Will-O’-Wisp", "a ghost fire ball that is small and fast making it hard to hit use air to blow it out", Weakness.air);
                         break;
-                    default: enemy = new Enemy(2, 2, 3, 3, 5, 5, "skeleton", "skeletons can be found in most places and easily taken out with bashing damage", Weakness.bash);
+                    default: enemy = new Enemy(6, 6, 7, 7, 12, 12, "skeleton", "skeletons can be found in most places and easily taken out with bashing damage", Weakness.bash);
                         break;
                 }
             }
@@ -98,7 +98,7 @@ namespace The__un_seen_future
                         enemy = new Enemy(10, 12, 11, 12, 15, 15, "dragonwit", "use ice", Weakness.ice);
                         break;
                     default:
-                        enemy = new Enemy(2, 2, 3, 3, 5, 5, "skeleton", "skeletons can be found in most places and easily taken out with bashing damage", Weakness.bash);
+                        enemy = new Enemy(8, 8, 9, 9, 15, 15, "skeleton", "skeletons can be found in most places and easily taken out with bashing damage", Weakness.bash);
                         break;
                 }
             }

@@ -44,8 +44,8 @@ namespace The__un_seen_future
             if (File.Exists(ApplicationData.Current.LocalFolder.Path+"\\savefile.txt")) load();
             else
             {
-                player = new Player(5, 5, 5, 5, 0, 0, 1, 3);
-                //player = new Player(500, 500, 500, 500, 0, 1000, 100, 300);
+                //player = new Player(5, 5, 5, 5, 0, 0, 1, 3);
+                player = new Player(500, 500, 500, 500, 70, 1000, 100, 300);
                 playerhealth = player.Health;
                 storymaker();
             }
@@ -274,13 +274,14 @@ namespace The__un_seen_future
                             }
                             imgbackground.Source = new BitmapImage(new Uri(BaseUri, "./Assets/crypt.png"));
                             break;
-                        case "btntoswap":
+                        case "btntoswamp":
                             enemy = Enemy.NewSwampEnemy();
                             if (player.Level >= 30 && Swampboss)
                             {
                                 enemy = Enemy.NewSwampEnemy(true);
                                 //storytime(Storylocation.Swampboss);
                             }
+                            imgbackground.Source = new BitmapImage(new Uri(BaseUri, "./Assets/swamp.png"));
                             break;
                         case "btntodragonden":
                             enemy = Enemy.NewDragondenEnemy();
@@ -289,9 +290,11 @@ namespace The__un_seen_future
                                 enemy = Enemy.NewDragondenEnemy(true);
                                 //storytime(Storylocation.Dragondenboss);
                             }
+                            imgbackground.Source = new BitmapImage(new Uri(BaseUri, "./Assets/dragon den.png"));
                             break;
                         case "btntodemonlord":
                             enemy = Enemy.demonlord;
+                            imgbackground.Source = new BitmapImage(new Uri(BaseUri, "./Assets/demon castle.png"));
                             break;
                         default:
                             break;
@@ -432,13 +435,22 @@ namespace The__un_seen_future
                 Swampboss = false;
                 bossesdead++;
                 btntodragonden.Visibility = Visibility.Visible;
+                storytime(Storylocation.Swapmcomplete);
+            }
+            else if (enemy.Name.Equals("dragon king"))
+            {
+                text.Text = text.Text + "\nwith the dragon king defeated you return to the palace";
+                Dragondenboss = false;
+                bossesdead++;
+                btntodemonlord.Visibility = Visibility.Visible;
+                storytime(Storylocation.Dragondencomplete);
             }
             else if (enemy.Name.Equals("demon lord"))
             {
                 text.Text = text.Text + "\nwith the demon lord dead you return to the palace";
                 if (timesrejected == bossesdead)
                 {
-                    storylocation = Storylocation.KilledEpilogue;//rejected the gold every time boss was killed
+                    storylocation = Storylocation.KilledEpilogue;//rejected the gold every time bosses were killed
                 }
                 else
                 {
@@ -509,7 +521,7 @@ namespace The__un_seen_future
             }
             btnplayer_Click(sender, e);
         }
-        public int autospeed=5;
+        public int autospeed=2;
         private void btnauto_Click(object sender, RoutedEventArgs e)
         {
             timer.Stop();
@@ -547,8 +559,9 @@ namespace The__un_seen_future
         private void btnadventurersguild_Click(object sender, RoutedEventArgs e)
         {
             nav.Visibility = Visibility.Collapsed;
+            hud.Visibility = Visibility.Collapsed;
             adventurersguild.Visibility = Visibility.Visible;
-            btnsubmitquest.Visibility = questnum == 0 ? Visibility.Visible : Visibility.Collapsed;
+            btnsubmitquest.Visibility = questnum <= 0 ? Visibility.Visible : Visibility.Collapsed;
             text.Text = "you see the Receptionists handing out quests";
             imgbackground.Source= new BitmapImage(new Uri(BaseUri, "./Assets/adventurersguild.png"));
             imgforeground.Source = new BitmapImage(new Uri(BaseUri, "./Assets/Receptionist.png"));
@@ -557,8 +570,10 @@ namespace The__un_seen_future
         private void btnshop_Click(object sender, RoutedEventArgs e)
         {
             nav.Visibility = Visibility.Collapsed;
+            hud.Visibility = Visibility.Collapsed;
             shop.Visibility = Visibility.Visible;
             text.Text = "you see the shopkeep behind the shop counter";
+            txtgold.Text = "Gold: " + player.Gold;
             imgbackground.Source = new BitmapImage(new Uri(BaseUri, "./Assets/shop.png"));
             imgforeground.Source = new BitmapImage(new Uri(BaseUri, "./Assets/shopkeeper.png"));
         }
@@ -581,45 +596,50 @@ namespace The__un_seen_future
                         break;
                 }
                 player.Gold -= 100;
+                txtgold.Text = "Gold: " + player.Gold;
             }
+            else { text.Text = "you don't have enough gold"; }
         }
         Enemy questenemy = new Enemy(1, 1, 1, 1, 1, 1, "", "default");
-        int questnum = -1, questreward;
+        int questnum = 1, questreward;
         private void btngetquest_Click(object sender, RoutedEventArgs e)
         {
             btngetquest.Visibility = Visibility.Collapsed;
             btnviewquest.Visibility = Visibility.Visible;
-            questenemy = Enemy.NewForestEnemy();
+            if (Forestboss) questenemy = Enemy.NewForestEnemy();
+            else if (Cryptboss) questenemy = Enemy.NewCryptEnemy();
+            else if (Swampboss) questenemy = Enemy.NewSwampEnemy();
+            else questenemy = Enemy.NewDragondenEnemy();
             questnum = random.Next(2, 6);
-            questreward = questnum * 5;
+            questreward = questnum * questenemy.Gold;
             btnviewquest_Click(sender, e);
         }
-        bool princessesforest = true, princessescrypt = true, princessesswamp = true, princessesdragonden = true;
-        int princessesaffinity = 0;
-        private void btntalktoprincesses_Click(object sender, RoutedEventArgs e)
+        bool princessforest = true, princesscrypt = true, princessswamp = true, princessdragonden = true;
+        int princessaffinity = 0;
+        private void btntalktoprincess_Click(object sender, RoutedEventArgs e)
         {
-            if ((!Forestboss) && princessesforest)
+            if ((!Forestboss) && princessforest)
             {
-                princessesforest = false;
-                princessesaffinity++;
+                princessforest = false;
+                princessaffinity++;
                 text.Text = "good job killing the lion";
             }
-            else if ((!Cryptboss) && princessescrypt)
+            else if ((!Cryptboss) && princesscrypt)
             {
-                princessescrypt = false;
-                princessesaffinity++;
+                princesscrypt = false;
+                princessaffinity++;
                 text.Text = "good job killing the lich";
             }
-            else if ((!Swampboss) && princessesswamp)
+            else if ((!Swampboss) && princessswamp)
             {
-                princessesswamp = false;
-                princessesaffinity++;
+                princessswamp = false;
+                princessaffinity++;
                 text.Text = "good job killing the witch";
             }
-            else if ((!Dragondenboss) && princessesdragonden)
+            else if ((!Dragondenboss) && princessdragonden)
             {
-                princessesdragonden = false;
-                princessesaffinity++;
+                princessdragonden = false;
+                princessaffinity++;
                 text.Text = "good job killing the dragon king";
             }
             else
@@ -665,7 +685,8 @@ namespace The__un_seen_future
             btnsubmitquest.Visibility = Visibility.Collapsed;
             player.Gold += questreward;
             player.XP += questenemy.XP * 3;
-            questnum = -1;
+            Xpcheck();
+            questnum = 1;
             questenemy.Name = "default";
         }
 
@@ -728,7 +749,8 @@ namespace The__un_seen_future
         {
             string path = ApplicationData.Current.LocalFolder.Path + "\\savefile.txt";
             File.WriteAllText(path, player.ToString() + "," + playerhealth + "|" + bossesdead + "," + Forestboss + "," + Cryptboss + "," + Swampboss + "," + Dragondenboss + "," + demonlord+"|"+
-                (int)storylocation+","+princessesforest + "," +princessescrypt + "," +princessesswamp + "," +princessesdragonden + "," +princessesaffinity);
+                (int)storylocation+","+princessforest + "," +princesscrypt + "," +princessswamp + "," +princessdragonden + "," +princessaffinity+"|"+
+                questnum);
         }
         private void load()
         {
@@ -752,8 +774,8 @@ namespace The__un_seen_future
                         if (readValue.Length>=3)
                         {
                             string[] story = readValue[2].Split(",");
-                            storylocation = (Storylocation)int.Parse(story[0]); princessesforest = bool.Parse(story[1]); princessescrypt = bool.Parse(story[2]);
-                            princessesswamp = bool.Parse(story[3]); princessesdragonden = bool.Parse(story[4]); princessesaffinity = int.Parse(story[5]);
+                            storylocation = (Storylocation)int.Parse(story[0]); princessforest = bool.Parse(story[1]); princesscrypt = bool.Parse(story[2]);
+                            princessswamp = bool.Parse(story[3]); princessdragonden = bool.Parse(story[4]); princessaffinity = int.Parse(story[5]);
                         }
                     }
                 }
@@ -791,7 +813,7 @@ namespace The__un_seen_future
         {
             //TODO I NEED NAMES
             //names
-            string kingdom = "kingdom", princesses = "princesses", king = "king";
+            string kingdom = "kingdom", princess = "princess", king = "king";
             Story[(int)Storylocation.Load] = new string[] { "welcome back" };
             Story[(int)Storylocation.Prologue] = new string[] { "background:darkness","any similarities to real life people or events are purely coincidence\nwelcome to The (un)seen future", "event{getname}",
                 "speaker{" + playername + " thoughts} everyone is born with something that makes them special or different from the norm, it might not be completely unique but it's something you can take pride in.",
@@ -804,19 +826,19 @@ namespace The__un_seen_future
                 "speaker{" + playername + " thoughts} be it nothing more then dreams or precognition a couple nights ago I had a strange dream that was something that was stright out of a fantasy story yet it felt so real",
                 "speaker{" + playername + " thoughts} but it was not the whole story, it kept jumping to random scenes, one second I was being called a hero by an unknown shadowy figure, the next fighting a demon, after that having a knife stabbed into my back surrounded by noble looking people",
                 "speaker{" + playername + " thoughts} I woke up in a cold sweat but had forgotten the dream entirely as if wiped from my mind, but now it's back as if it was never gone becuse the first part is happen a shadowy figure is calling me a hero.",
-                "foreground:princesses",
+                "foreground:princess",
                 "event{+1}","speaker{shadowy figure} THE SUMMONING WORKED! oh hero please save us from the demon lord",
                 "options{who are you,where is this,whats going on}",
-                "speaker{"+princesses+"} I am the princesses of the kingdom "+kingdom+", "+princesses,
-                "speaker{"+princesses+"} the kingdom of "+kingdom+" my name is "+princesses,
-                "speaker{"+princesses+"} you have been summoned to this world my name is "+princesses,
+                "speaker{"+princess+"} I am the princess of the kingdom "+kingdom+", "+princess,
+                "speaker{"+princess+"} the kingdom of "+kingdom+" my name is "+princess,
+                "speaker{"+princess+"} you have been summoned to this world my name is "+princess,
                 "background:throneroom","you look around and see that you are now in a throne room",
-                "speaker{"+princesses+"} before you set off on your quest choose your weapon",
-                "event{+1}","speaker{"+princesses+"} which type of weapon do you want",
+                "speaker{"+princess+"} before you set off on your quest choose your weapon",
+                "event{+1}","speaker{"+princess+"} which type of weapon do you want",
                 "options{bash,slash,stab}",
                 "type:bash","type:slash","type:stab",
                 "",
-                "event{+1}","speaker{"+princesses+"} which element do you want your weapon to have on your weapon",
+                "event{+1}","speaker{"+princess+"} which element do you want your weapon to have on your weapon",
                 "options{fire,ice,air,earth}",
                 "type:fire","type:ice","type:air","type:earth",
                 "background:town",
@@ -828,6 +850,10 @@ namespace The__un_seen_future
             Story[(int)Storylocation.Cryptboss] = new string[] { "test" };
             Story[(int)Storylocation.Cryptcomplete] = new string[] { "after retuning from the battle the king greets you", "speaker{" + king + "} well done hero on killing the lord of the dead for your deed please accept this 500 gold", "event{+1}",
             "speaker{"+playername+"} thank you sir","options{accept,reject}","add{player.gold+500} you accepted the gold","add{timesrejected+1} you don't accept the gold","you take your leave"};
+            Story[(int)Storylocation.Swapmcomplete] = new string[] { "after retuning from the battle the king greets you", "speaker{" + king + "} well done hero on killing the evil witch for your deed please accept this 750 gold", "event{+1}",
+            "speaker{"+playername+"} thank you sir","options{accept,reject}","add{player.gold+750} you accepted the gold","add{timesrejected+1} you don't accept the gold","you take your leave"};
+            Story[(int)Storylocation.Dragondencomplete] = new string[] { "after retuning from the battle the king greets you", "speaker{" + king + "} well done hero on killing the king of dragons for your deed please accept this 1000 gold", "event{+1}",
+            "speaker{"+playername+"} thank you sir","options{accept,reject}","add{player.gold+1000} you accepted the gold","add{timesrejected+1} you don't accept the gold","you take your leave"};
             Story[(int)Storylocation.ControlledEpilogue] = new string[] { "after returning to the palace you receive your reward\nit takes some time but the king shows up and hands you a heavy bag of gold", "speaker{" + king + "} congratulations on beating the demon lord",
             "add{player.gold+1500}","you look in side the bag and see 1500 gold" };
             //,"speaker{dev} this ending you are a puppet of the kingdom controlled by money"};
@@ -839,6 +865,6 @@ namespace The__un_seen_future
     }
     public enum Storylocation
     {
-        Load,Prologue, Forestboss, Forestcomplete, Cryptboss, Cryptcomplete, ControlledEpilogue, KilledEpilogue
+        Load,Prologue, Forestboss, Forestcomplete, Cryptboss, Cryptcomplete, Swapmcomplete, Dragondencomplete, ControlledEpilogue, KilledEpilogue
     }
 }
