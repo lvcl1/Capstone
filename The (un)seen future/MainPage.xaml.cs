@@ -45,14 +45,13 @@ namespace The__un_seen_future
             else
             {
                 //player = new Player(5, 5, 5, 5, 0, 0, 1, 3);
-                player = new Player(500, 500, 500, 500, 70, 1000, 100, 300);
+                player = new Player(500, 500, 500, 500, 0, 1000, 100, 300);
                 playerhealth = player.Health;
                 storymaker();
             }
             //btnrun_Click(null, null);
             timer.Tick += Timer_Tick;
             speaker.Text = "";
-            //imgbackground.Source = new BitmapImage(new Uri(BaseUri, "./Assets/town.png"));
             storytime(storylocation);
             Button_Click(null, null);
         }
@@ -67,7 +66,6 @@ namespace The__un_seen_future
                 btn.IsEnabled = false;
                 menus.Visibility = Visibility.Visible;
                 choices.Visibility = Visibility.Visible;
-                //var buttons = choicesbuttons.ToArray();
                 str = str.Substring(str.IndexOf("{") + 1, str.IndexOf("}") - str.IndexOf("{") - 1);
                 var temp = str.Split(',');
                 timer.Stop();
