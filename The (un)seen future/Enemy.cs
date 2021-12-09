@@ -22,7 +22,7 @@ namespace The__un_seen_future
         static private Enemy enemy;
         static public Enemy NewForestEnemy(bool boss = false)
         {
-            int newenemy = 0;//random.Next(4);
+            int newenemy = random.Next(4);
             if (boss) enemy = new Enemy(10, 10, 10, 10, 10, 10, "lion", "", Weakness.ice);
             else
             {
